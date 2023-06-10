@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego de preguntas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #df3d3d;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    h1 {
+        background-color: aqua;
+    }
+    
+    p {
+      color: #e6e0e0;
+      margin-bottom: 20px;
+    }
+    
+    .question {
+        background-color: aqua;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .options {
+      display: flex;
+      justify-content: center;
+    }
+    
+    .option {
+      background-color: #e9e9e9;
+      border: none;
+      color: #110dd8;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .option:hover {
+      background-color: #ccc;
+    }
+    
+    .message {
+      margin-top: 20px;
+      background-color: #11bb58;
+    }
+    
+    .score {
+      font-weight: bold;
+    }
+    
+    .reset {
+      margin-top: 20px;
+    }
+    
+    .reset button {
+      background-color: #333;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .reset button:hover {
+      background-color: #11bb58;
+    }
+  </style>
+</head>
+<body>
+  <h1>Juego de Preguntas</h1>
+  <p>Bienvenido al juego de adivinanzas. ¡Demuestra si sabes!</p>
+  
+  <div id="question-container" class="question"></div>
+  <div id="options-container" class="options"></div>
+  <div id="message-container" class="message"></div>
+  <div id="score-container" class="score"></div>
+  <div id="reset-container" class="reset"></div>
+  
+  <script>
+    
+    const questions = [
+      {
+        question: "Tiene dientes y no come, tiene cabeza y no es hombre. ¿Qué es?",
+        options: ["peine", "pinza","cuchillo"],
+        answer: 0
+      },
+      {
+        question: "Blanco por dentro, verde por fuera. Si quieres que te lo diga, espera. ¿Qué es?",
+        options: ["huevo", "manzana", "pera", "luna"],
+        answer: 2
+      },
+      {
+        question: "En el campo me crié, sin ser árbol me estiré, y aunque fruto no daré, a todos me comeré. ¿Qué soy?",
+         options: ["lechuga", "zanahoria", "vaca", "papa"],
+        answer: 1
+      },
+      
+      
+    ];
+    
+    let currentQuestionIndex = 0;
+    let score = 0;
+    
+    const questionContainer = document.getElementById("question-container");
+    const optionsContainer = document.getElementById("options-container");
+    const messageContainer = document.getElementById("message-container");
+    const scoreContainer = document.getElementById("score-container");
+    const resetContainer = document.getElementById("reset-container");
+    
+    function displayQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      
+      questionContainer.innerHTML = `<h2>${currentQuestion.question}</h2>`;
+      
+      let optionsHTML = "";
+      for (let i = 0; i < currentQuestion.options.length; i++) {
+        optionsHTML += `<button class="option" onclick="checkAnswer(${i})">${currentQuestion.options[i]}</button>`;
+      }
+      optionsContainer.innerHTML = optionsHTML;
+    }
+    
+    function checkAnswer(optionIndex) {
+      const currentQuestion = questions[currentQuestionIndex];
+      if (optionIndex === currentQuestion.answer) {
+        score++;
+        messageContainer.textContent = "¡Respuesta correcta!";
+       
+      } else {
+        messageContainer.textContent = "Respuesta incorrecta";
+       
+      }
+      
+      scoreContainer.textContent = `Puntuación: ${score}`;
+      
+      currentQuestionIndex++;
+      
+      if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+      } else {
+        endGame();
+      }
+    }
+    
+    function endGame() {
+      questionContainer.innerHTML = "";
+      optionsContainer.innerHTML = "";
+      
+      if (score === questions.length) {
+        messageContainer.textContent = "¡Felicidades! ¡Adivinaste todas  correctamente!";
+      }  else if (score <= questions.length){
+        messageContainer.textContent = "¡Felicidades! ¡Respondiste algunas preguntas correctamente!";
+      } else {
+        messageContainer.textContent = "Juego terminado. ¡ No pegaste ninguna,segui imtenetando !";
+      }
+      
+      
+      resetContainer.innerHTML = '<button onclick="resetGame()">Reiniciar Juego</button>';
+    }
+    
+    function resetGame() {
+      currentQuestionIndex = 0;
+      score = 0;
+      messageContainer.textContent = "";
+      scoreContainer.textContent = "";
+      resetContainer.innerHTML = "";
+      displayQuestion();
+    }
+    
+    displayQuestion();
+  </script>
+
+<a href="index.html">Volver.</a>
+</body>
+</html>

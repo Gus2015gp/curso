@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego de preguntas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    h1 {
+      color: #333;
+    }
+    
+    p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+    
+    .question {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .options {
+      display: flex;
+      justify-content: center;
+    }
+    
+    .option {
+      background-color: #e9e9e9;
+      border: none;
+      color: #333;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .option:hover {
+      background-color: #ccc;
+    }
+    
+    .message {
+      margin-top: 20px;
+    }
+    
+    .score {
+      font-weight: bold;
+    }
+    
+    .reset {
+      margin-top: 20px;
+    }
+    
+    .reset button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .reset button:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Juego de Preguntas</h1>
+  <p>Bienvenido al juego de Adivinanzas. ¡Demuestra tus conocimientos!</p>
+  
+  <div id="question-container" class="question"></div>
+  <div id="options-container" class="options"></div>
+  <div id="message-container" class="message"></div>
+  <div id="score-container" class="score"></div>
+  <div id="reset-container" class="reset"></div>
+  
+  <script>
+    
+    const questions = [
+      {
+        question: "¿Cuál es la capital de Francia?",
+        options: ["París", "Madrid", "Roma", "Berlín"],
+        answer: 0
+      },
+      {
+        question: "¿Cuál es el río más largo del mundo?",
+        options: ["Amazonas", "Nilo", "Misisipi", "Yangtsé"],
+        answer: 1
+      },
+      {
+        question: "¿En qué año comenzó la Segunda Guerra Mundial?",
+        options: ["1914", "1939", "1945", "1950"],
+        answer: 1
+      },
+      {
+        question: "¿Quién pintó la Mona Lisa?",
+        options: ["Leonardo da Vinci", "Pablo Picasso", "Vincent van Gogh", "Michelangelo"],
+        answer: 0
+      },
+      {
+        question: "¿Cuál es el planeta más grande del sistema solar?",
+        options: ["Júpiter", "Saturno", "Urano", "Neptuno"],
+        answer: 0
+      }
+    ];
+    
+    let currentQuestionIndex = 0;
+    let score = 0;
+    
+    const questionContainer = document.getElementById("question-container");
+    const optionsContainer = document.getElementById("options-container");
+    const messageContainer = document.getElementById("message-container");
+    const scoreContainer = document.getElementById("score-container");
+    const resetContainer = document.getElementById("reset-container");
+    
+    function displayQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      
+      questionContainer.innerHTML = `<h2>${currentQuestion.question}</h2>`;
+      
+      let optionsHTML = "";
+      for (let i = 0; i < currentQuestion.options.length; i++) {
+        optionsHTML += `<button class="option" onclick="checkAnswer(${i})">${currentQuestion.options[i]}</button>`;
+      }
+      optionsContainer.innerHTML = optionsHTML;
+    }
+    
+    function checkAnswer(optionIndex) {
+      const currentQuestion = questions[currentQuestionIndex];
+      if (optionIndex === currentQuestion.answer) {
+        score++;
+        messageContainer.textContent = "¡Respuesta correcta!";
+        messageContainer.style.color = "green";
+      } else {
+        messageContainer.textContent = "Respuesta incorrecta";
+        messageContainer.style.color = "red";
+      }
+      
+      scoreContainer.textContent = `Puntuación: ${score}`;
+      
+      currentQuestionIndex++;
+      
+      if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+      } else {
+        endGame();
+      }
+    }
+    
+    function endGame() {
+      questionContainer.innerHTML = "";
+      optionsContainer.innerHTML = "";
+      
+      if (score === questions.length) {
+        messageContainer.textContent = "¡Felicidades! ¡Respondiste todas las preguntas correctamente!";
+      } else {
+        messageContainer.textContent = "Juego terminado. ¡ No pegaste ninguna,segui imtenetando !";
+      }
+      
+      resetContainer.innerHTML = '<button onclick="resetGame()">Reiniciar Juego</button>';
+    }
+    
+    function resetGame() {
+      currentQuestionIndex = 0;
+      score = 0;
+      messageContainer.textContent = "";
+      scoreContainer.textContent = "";
+      resetContainer.innerHTML = "";
+      displayQuestion();
+    }
+    
+    displayQuestion();
+  </script>
+
+<a href="index.html">Volver.</a>
+</body>
+</html>
